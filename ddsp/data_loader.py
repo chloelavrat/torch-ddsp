@@ -6,14 +6,14 @@ import torchaudio.transforms as T
 from torch.utils.data import Dataset, DataLoader, dataloader
 
 class AudioLoader(Dataset):
-    def __init__(self, data_path, block_size, sequence_size, mono=True, sample_rate=16000):
+    def __init__(self, data_path, block_size, sequence_size, mono=True, sampling_rate=16000):
         super().__init__()
         ## -- Parameters
         self.data_path = data_path
         self.block_size = block_size
         self.sequence_size = sequence_size
         self.mono = mono
-        self.sample_rate = sample_rate
+        self.sampling_rate = sampling_rate
         ## -- load files path
         if (os.path.exists(self.data_path)):
             self.files = sorted(glob.glob(self.data_path + '/*'))
@@ -31,7 +31,7 @@ class AudioLoader(Dataset):
         for f in self.files:
             print(".Loading : "+f, end="")
             # Load audio
-            wav, sample_rate = self.loadAudioFile(f)
+            wav, sampling_rate = self.loadAudioFile(f)
             # crop audio
             cropped_size = int(wav.shape[1]/(self.frame))
             wav = wav[:,:cropped_size*self.frame]
@@ -44,18 +44,18 @@ class AudioLoader(Dataset):
         return slices
 
     def loadAudioFile(self, path):
-        data, sample_rate  = torchaudio.load(path)
+        data, sampling_rate  = torchaudio.load(path)
         ## -- resampling
-        if sample_rate != self.sample_rate:
-            resampler = T.Resample(sample_rate , self.sample_rate, dtype=data.dtype)
-            sample_rate = self.sample_rate
+        if sampling_rate != self.sampling_rate:
+            resampler = T.Resample(sampling_rate , self.sampling_rate, dtype=data.dtype)
+            sampling_rate = self.sampling_rate
             data = resampler(data)
         ## -- stereo to mono
         if self.mono == True:
             data = torch.mean(data, dim=0)
             data = data.unsqueeze(0)
         ## -- done
-        return data, sample_rate
+        return data, sampling_rate
 
     def __len__(self):
         return len(self.slices)
@@ -76,6 +76,6 @@ if __name__ == "__main__":
                     data_path, 
                     block_size=160, 
                     sequence_size=100,
-                    sample_rate=16000,
+                    sampling_rate=16000,
                     mono=True)
     
