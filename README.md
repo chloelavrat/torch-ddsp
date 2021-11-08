@@ -28,12 +28,9 @@ The instrument transfer is carried out from an auto-encoder trained to reproduce
 
 ![1_SAX_2](assets/1_SAX_2.png)
 
-- Original saxophone sample (from the P.Glass Saxophone Solos)
-<audio src="assets/sax_original.wav"></audio>
+- Original saxophone sample (from the P.Glass Saxophone Solos): [Link](assets/sax_original.wav)
 
-- Saxophone transfered into a violin (16kHz // 16bits)
-
-<audio src="assets/sax_to_violin_transfert.wav"></audio>
+- Saxophone transfered into a violin (16kHz // 16bits): [Link](assets/sax_to_violin_transfert.wav)
 
 
 #### DDSP in a Pure data external
